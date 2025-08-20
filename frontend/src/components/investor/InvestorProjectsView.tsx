@@ -226,25 +226,16 @@ export default function InvestorProjectsView() {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="text-center">
-                      <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                        <TrendingUp className="w-6 h-6 text-white" />
+                      <div className="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <span className="text-2xl font-bold text-white">
+                          {(project.title || project.name || 'P').charAt(0).toUpperCase()}
+                        </span>
                       </div>
                       <p className="text-white/80 text-sm font-medium">{project.category}</p>
                     </div>
                   </div>
                 )}
-                <button
-                  onClick={() => handleFavorite(project.id)}
-                  className="absolute top-2 right-2 p-2 bg-white/90 rounded-full hover:bg-white transition-colors"
-                >
-                  <Heart 
-                    className={`w-4 h-4 ${
-                      favorites.includes(project.id) 
-                        ? 'text-red-500 fill-current' 
-                        : 'text-gray-600'
-                    }`} 
-                  />
-                </button>
+
 
                 <div className="absolute top-2 left-2">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${getRiskColor(project.riskLevel)}`}>
@@ -312,7 +303,7 @@ export default function InvestorProjectsView() {
                 {/* Actions */}
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={() => navigate(`/investor/projects/${project.id}`)}
+                    onClick={() => navigate(`/projects/${project.id}`)}
                     className="flex-1 px-4 py-2 border border-orange-300 text-orange-700 rounded-lg hover:bg-orange-50 transition-colors flex items-center justify-center space-x-2"
                   >
                     <Eye className="w-4 h-4" />
@@ -320,7 +311,7 @@ export default function InvestorProjectsView() {
                   </button>
                   
                   <button
-                    onClick={() => handleInvest(project.id)}
+                    onClick={() => navigate(`/projects/${project.id}`)}
                     className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors flex items-center justify-center space-x-2"
                   >
                     <DollarSign className="w-4 h-4" />

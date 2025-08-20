@@ -78,8 +78,7 @@ export default function ProfilePage() {
   const tabs = [
     { id: 'profile', name: 'Profile', icon: User },
     { id: 'security', name: 'Security', icon: Shield },
-    { id: 'notifications', name: 'Notifications', icon: Bell },
-    { id: 'billing', name: 'Billing', icon: CreditCard }
+    { id: 'notifications', name: 'Notifications', icon: Bell }
   ];
 
   const handleProfileSave = async () => {
@@ -154,7 +153,7 @@ export default function ProfilePage() {
               {/* Profile Summary */}
               <div className="text-center mb-6">
                 <div className="relative inline-block">
-                  <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-3">
+                  <div className="w-20 h-20 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-3">
                     {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
                   </div>
                   <button className="absolute bottom-0 right-0 w-6 h-6 bg-white rounded-full border-2 border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
@@ -165,7 +164,7 @@ export default function ProfilePage() {
                   {user?.firstName} {user?.lastName}
                 </h3>
                 <p className="text-sm text-gray-600 mb-2">{user?.email}</p>
-                <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ?{getRoleColor(user?.role || 'user')}`}>
+                <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${getRoleColor(user?.role || 'user')}`}>
                   {user?.role?.charAt(0).toUpperCase()}{user?.role?.slice(1)}
                 </span>
               </div>
@@ -178,7 +177,7 @@ export default function ProfilePage() {
                     onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       activeTab === tab.id
-                        ? 'bg-purple-100 text-purple-700'
+                        ? 'bg-orange-100 text-orange-700'
                         : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                     }`}
                   >
@@ -585,7 +584,7 @@ export default function ProfilePage() {
                             onChange={(e) => handleNotificationChange(key, e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
                         </label>
                       </div>
                     ))}
@@ -593,60 +592,7 @@ export default function ProfilePage() {
                 </div>
               )}
 
-              {/* Billing Tab */}
-              {activeTab === 'billing' && (
-                <div>
-                  <div className="mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-2">Billing & Payments</h2>
-                    <p className="text-gray-600">Manage your payment methods and billing information</p>
-                  </div>
 
-                  <div className="space-y-6">
-                    {/* Payment Methods */}
-                    <div className="border border-gray-200 rounded-lg p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="font-medium text-gray-900">Payment Methods</h3>
-                        <button className="btn-primary">
-                          Add Payment Method
-                        </button>
-                      </div>
-
-                      <div className="text-center py-8 text-gray-500">
-                        <CreditCard className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-                        <p>No payment methods added yet</p>
-                        <p className="text-sm">Add a payment method to start investing</p>
-                      </div>
-                    </div>
-
-                    {/* Billing History */}
-                    <div className="border border-gray-200 rounded-lg p-6">
-                      <h3 className="font-medium text-gray-900 mb-4">Billing History</h3>
-                      
-                      <div className="text-center py-8 text-gray-500">
-                        <Calendar className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-                        <p>No billing history yet</p>
-                        <p className="text-sm">Your transaction history will appear here</p>
-                      </div>
-                    </div>
-
-                    {/* Account Deletion */}
-                    <div className="border border-red-200 rounded-lg p-6 bg-red-50">
-                      <div className="flex items-start space-x-3">
-                        <Trash2 className="w-5 h-5 text-red-600 mt-0.5" />
-                        <div className="flex-1">
-                          <h3 className="font-medium text-red-900">Delete Account</h3>
-                          <p className="text-sm text-red-700 mt-1">
-                            Permanently delete your account and all associated data. This action cannot be undone.
-                          </p>
-                          <button className="mt-3 text-sm text-red-600 hover:text-red-800 font-medium">
-                            Delete Account
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </motion.div>
           </div>
         </div>

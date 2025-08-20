@@ -18,7 +18,9 @@ export class WalletService {
   // Top up wallet with Flutterwave transaction
   static async topUpWallet(transactionId: string): Promise<ApiResponse<TopUpResponse>> {
     try {
-      const response = await apiService.post('/users/topup', { transactionId });
+      // Remove dots from transaction ID to ensure compatibility
+      const cleanTransactionId = transactionId.replace(/\./g, '');
+      const response = await apiService.post('/users/topup', { transactionId: cleanTransactionId });
       
       if (!response.error) {
         ToastService.success(`Wallet topped up successfully! New balance: ₦${response.data.newBalance}`);
@@ -54,6 +56,21 @@ export class WalletService {
       currency: 'NGN',
       minimumFractionDigits: 2,
     }).format(numAmount);
+  }
+
+  // Validate transaction ID
+  static validateTransactionId(transactionId: string): { isValid: boolean; error?: string } {
+    if (!transactionId || transactionId.trim().length === 0) {
+      return { isValid: false, error: 'Transaction ID is required' };
+    }
+    
+    // Remove dots and validate
+    const cleanId = transactionId.replace(/\./g, '');
+    if (cleanId.length < 5) {
+      return { isValid: false, error: 'Invalid transaction ID format' };
+    }
+    
+    return { isValid: true };
   }
 
   // Validate transaction amount
