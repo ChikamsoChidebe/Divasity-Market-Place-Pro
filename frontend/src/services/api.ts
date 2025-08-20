@@ -1,7 +1,7 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://52.91.158.172:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://test.divasity.com/foldername/api';
 
 interface ApiResponse<T = any> {
   error: boolean;
