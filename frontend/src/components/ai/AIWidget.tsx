@@ -22,7 +22,6 @@ import {
 } from 'lucide-react';
 
 import speechService from '../../services/speechService';
-import groqService from '../../services/groqService';
 
 interface ChatMessage {
   id: string;
@@ -102,8 +101,14 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
 
   // Load chat history on mount
   useEffect(() => {
-    const history = groqService.getChatHistory();
-    setMessages(history);
+    // Initialize with welcome message
+    const welcomeMessage: ChatMessage = {
+      id: '1',
+      role: 'assistant',
+      content: 'Hello! I\'m Diva, your AI assistant. How can I help you with Divasity today?',
+      timestamp: new Date()
+    };
+    setMessages([welcomeMessage]);
   }, []);
 
   // Auto-scroll to bottom of messages
@@ -131,31 +136,44 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
     updateState({ isLoading: true });
     setInputText('');
 
+    // Add user message
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: text.trim(),
+      timestamp: new Date(),
+      isVoice
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+
     try {
-      const response = await groqService.sendMessage(text.trim(), isVoice);
-      const updatedHistory = groqService.getChatHistory();
-      setMessages(updatedHistory);
+      // Simulate AI response
+      setTimeout(() => {
+        const aiResponse: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: 'Thank you for your message. The AI service is currently being configured. Please contact support for assistance.',
+          timestamp: new Date()
+        };
+        
+        setMessages(prev => [...prev, aiResponse]);
+        updateState({ isLoading: false });
 
-      // Auto-speak response if enabled
-      if (state.voiceEnabled && state.autoSpeak && speechService.isSpeechSynthesisSupported()) {
-        updateState({ isSpeaking: true });
-        try {
-          await speechService.textToSpeech(response.content, voiceSettings);
-        } catch (error) {
-          console.error('Text-to-speech error:', error);
-        } finally {
-          updateState({ isSpeaking: false });
+        // Auto-speak response if enabled
+        if (state.voiceEnabled && state.autoSpeak && speechService.isSpeechSynthesisSupported()) {
+          updateState({ isSpeaking: true });
+          speechService.textToSpeech(aiResponse.content, voiceSettings)
+            .catch(error => console.error('Text-to-speech error:', error))
+            .finally(() => updateState({ isSpeaking: false }));
         }
-      }
-
-      // Message sent - no notification needed
+      }, 1000);
     } catch (error) {
       console.error('Error sending message:', error);
       showNotification('Failed to send message. Please try again.', 'error');
-    } finally {
       updateState({ isLoading: false });
     }
-  }, [state.isLoading, state.voiceEnabled, state.autoSpeak, voiceSettings, showNotification, updateState]);
+  }, [state.voiceEnabled, state.autoSpeak, voiceSettings, showNotification, updateState]);
 
   // Handle voice input
   const handleVoiceInput = useCallback(async () => {
@@ -200,7 +218,6 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
 
   // Clear chat history
   const handleClearHistory = useCallback(() => {
-    groqService.clearHistory();
     setMessages([]);
     showNotification('Chat history cleared', 'success');
   }, [showNotification]);
@@ -208,12 +225,14 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
   // Export chat history
   const handleExportHistory = useCallback(() => {
     try {
-      const exportText = groqService.exportChatHistory();
+      const exportText = messages.map(msg => 
+        `[${msg.timestamp.toLocaleString()}] ${msg.role}: ${msg.content}`
+      ).join('\n');
       const blob = new Blob([exportText], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `divasity-ai-chat-?{new Date().toISOString().split('T')[0]}.txt`;
+      a.download = `divasity-ai-chat-${new Date().toISOString().split('T')[0]}.txt`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -222,7 +241,7 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
     } catch (error) {
       showNotification('Failed to export chat history', 'error');
     }
-  }, [showNotification]);
+  }, [messages, showNotification]);
 
   // Stop speaking
   const handleStopSpeaking = useCallback(() => {
@@ -250,16 +269,16 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
         key={message.id}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`flex ?{isUser ? 'justify-end' : 'justify-start'} mb-2`}
+        className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-2`}
       >
-        <div className={`flex items-start space-x-2 max-w-[85%] ?{isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
-          <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ?{
+        <div className={`flex items-start space-x-2 max-w-[85%] ${isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
+          <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
             isUser ? 'bg-purple-500' : 'bg-gradient-to-r from-purple-500 to-orange-500'
           }`}>
             {isUser ? <User className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4 text-white" />}
           </div>
           
-          <div className={`rounded-xl px-3 py-2 relative ?{
+          <div className={`rounded-xl px-3 py-2 relative ${
             isUser 
               ? 'bg-purple-500 text-white' 
               : 'bg-gray-100 text-gray-800 border border-gray-200'
@@ -352,11 +371,11 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
             <label className="text-sm text-gray-700">Voice Responses</label>
             <button
               onClick={() => updateState({ autoSpeak: !state.autoSpeak })}
-              className={`w-10 h-6 rounded-full transition-colors duration-200 ?{
+              className={`w-10 h-6 rounded-full transition-colors duration-200 ${
                 state.autoSpeak ? 'bg-gradient-to-r from-purple-500 to-orange-500' : 'bg-gray-300'
               }`}
             >
-              <div className={`w-4 h-4 bg-white rounded-full transition-transform duration-200 ?{
+              <div className={`w-4 h-4 bg-white rounded-full transition-transform duration-200 ${
                 state.autoSpeak ? 'translate-x-5' : 'translate-x-1'
               }`} />
             </button>
@@ -366,11 +385,11 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
             <label className="text-sm text-gray-700">Voice Input</label>
             <button
               onClick={() => updateState({ voiceEnabled: !state.voiceEnabled })}
-              className={`w-10 h-6 rounded-full transition-colors duration-200 ?{
+              className={`w-10 h-6 rounded-full transition-colors duration-200 ${
                 state.voiceEnabled ? 'bg-gradient-to-r from-purple-500 to-orange-500' : 'bg-gray-300'
               }`}
             >
-              <div className={`w-4 h-4 bg-white rounded-full transition-transform duration-200 ?{
+              <div className={`w-4 h-4 bg-white rounded-full transition-transform duration-200 ${
                 state.voiceEnabled ? 'translate-x-5' : 'translate-x-1'
               }`} />
             </button>
@@ -445,7 +464,7 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
       </AnimatePresence>
 
       {/* AI Widget */}
-      <div ref={widgetRef} className={`fixed bottom-20 right-4 z-40 ?{className}`}>
+      <div ref={widgetRef} className={`fixed bottom-20 right-4 z-40 ${className}`}>
         {/* Settings Panel */}
         <AnimatePresence>
           {renderSettings()}
@@ -458,7 +477,7 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 20 }}
-              className={`mb-2 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden ?{
+              className={`mb-2 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden ${
                 state.isMinimized ? 'w-72 h-14' : 'w-72 h-[380px]'
               }`}
             >
@@ -577,7 +596,7 @@ const AIWidget: React.FC<AIWidgetProps> = ({ className = '' }) => {
                         <button
                           type="button"
                           onClick={handleVoiceInput}
-                          className={`p-2 rounded-full transition-colors duration-200 ?{
+                          className={`p-2 rounded-full transition-colors duration-200 ${
                             state.isListening 
                               ? 'bg-red-500 text-white' 
                               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
