@@ -63,11 +63,15 @@ const FundWallet: React.FC<FundWalletProps> = ({ onSuccess, onClose }) => {
 
             if (!verifyResponse.error) {
               ToastService.success(`Wallet funded successfully! ₦${fundAmount.toLocaleString()} added.`);
+              // Dispatch wallet update event
+              window.dispatchEvent(new CustomEvent('walletUpdated'));
               onSuccess?.(fundAmount);
               setAmount('');
             } else {
               // If backend verification fails, still show success since payment went through
               ToastService.success(`Payment completed! ₦${fundAmount.toLocaleString()} will be added to your wallet.`);
+              // Still dispatch update event
+              window.dispatchEvent(new CustomEvent('walletUpdated'));
               onSuccess?.(fundAmount);
               setAmount('');
             }
@@ -75,6 +79,8 @@ const FundWallet: React.FC<FundWalletProps> = ({ onSuccess, onClose }) => {
             console.error('Payment verification error:', error);
             // Payment was successful on Flutterwave side, so we still consider it successful
             ToastService.success(`Payment completed! ₦${fundAmount.toLocaleString()} will be added to your wallet.`);
+            // Dispatch wallet update event
+            window.dispatchEvent(new CustomEvent('walletUpdated'));
             onSuccess?.(fundAmount);
             setAmount('');
           }

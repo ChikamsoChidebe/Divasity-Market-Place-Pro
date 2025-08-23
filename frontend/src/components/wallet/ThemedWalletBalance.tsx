@@ -84,6 +84,8 @@ const ThemedWalletBalance: React.FC<ThemedWalletBalanceProps> = ({
     setBalance(prev => prev + amount);
     setShowFundModal(false);
     fetchWalletData();
+    // Dispatch wallet update event for other components
+    window.dispatchEvent(new CustomEvent('walletUpdated'));
   };
 
 

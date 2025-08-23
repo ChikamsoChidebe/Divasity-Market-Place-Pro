@@ -40,19 +40,62 @@ export default function InvestorLayout() {
     }
   }, [user?.id]);
 
+  // Listen for wallet updates
+  useEffect(() => {
+    const handleWalletUpdate = () => {
+      fetchUserBalance();
+    };
+
+    // Listen for custom wallet update events
+    window.addEventListener('walletUpdated', handleWalletUpdate);
+    
+    // Also check sessionStorage for balance updates
+    const checkStorageBalance = () => {
+      const storedUser = JSON.parse(sessionStorage.getItem('divasity_user') || '{}');
+      if (storedUser.balance && parseFloat(storedUser.balance) !== userBalance) {
+        setUserBalance(parseFloat(storedUser.balance));
+      }
+    };
+
+    const interval = setInterval(checkStorageBalance, 1000);
+
+    return () => {
+      window.removeEventListener('walletUpdated', handleWalletUpdate);
+      clearInterval(interval);
+    };
+  }, [userBalance]);
+
   const fetchUserBalance = async () => {
     try {
+      // First try to get from sessionStorage
+      const storedUser = JSON.parse(sessionStorage.getItem('divasity_user') || '{}');
+      if (storedUser.balance) {
+        setUserBalance(parseFloat(storedUser.balance));
+      }
+
+      // Then try to fetch from API
       const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${user?.id}`, {
         headers: {
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+          'Authorization': `Bearer ${sessionStorage.getItem('divasity_token')}`
         }
       });
       const data = await response.json();
       if (!data.error && data.data?.balance) {
-        setUserBalance(parseFloat(data.data.balance));
+        const newBalance = parseFloat(data.data.balance);
+        setUserBalance(newBalance);
+        
+        // Update sessionStorage
+        const currentUser = JSON.parse(sessionStorage.getItem('divasity_user') || '{}');
+        currentUser.balance = newBalance.toString();
+        sessionStorage.setItem('divasity_user', JSON.stringify(currentUser));
       }
     } catch (error) {
       console.error('Failed to fetch user balance:', error);
+      // Fallback to sessionStorage
+      const storedUser = JSON.parse(sessionStorage.getItem('divasity_user') || '{}');
+      if (storedUser.balance) {
+        setUserBalance(parseFloat(storedUser.balance));
+      }
     }
   };
 
