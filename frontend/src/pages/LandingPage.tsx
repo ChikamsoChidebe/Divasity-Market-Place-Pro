@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   ArrowRight, 
   TrendingUp, 
@@ -17,46 +17,90 @@ import {
   DollarSign,
   MessageCircle,
   Share2,
-  Heart
+  Heart,
+  CheckCircle,
+  Eye,
+  Lightbulb
 } from 'lucide-react';
 import Header from '../components/layout/Header';
 import divasityLogo from '../assets/divasityIcon.png';
 
 export function LandingPage() {
   const navigate = useNavigate();
+  const [counters, setCounters] = useState({
+    funded: 0,
+    users: 0,
+    projects: 0,
+    rate: 0
+  });
+
+  // Counter animation effect
+  useEffect(() => {
+    const targets = { funded: 50000000, users: 10000, projects: 500, rate: 98 };
+    const duration = 2000; // 2 seconds
+    const steps = 60;
+    const stepTime = duration / steps;
+    
+    let currentStep = 0;
+    const timer = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      
+      setCounters({
+        funded: Math.floor(targets.funded * progress),
+        users: Math.floor(targets.users * progress),
+        projects: Math.floor(targets.projects * progress),
+        rate: Math.floor(targets.rate * progress)
+      });
+      
+      if (currentStep >= steps) {
+        clearInterval(timer);
+        setCounters(targets);
+      }
+    }, stepTime);
+    
+    return () => clearInterval(timer);
+  }, []);
 
   const features = [
     {
-      icon: TrendingUp,
-      title: 'Smart Investments',
-      description: 'AI-powered investment recommendations with real-time market analysis',
+      icon: CheckCircle,
+      title: 'Guaranteed Funding',
+      description: '100% proven approach to fund raising',
       color: 'from-purple-500 to-purple-600'
-    },
-    {
-      icon: Shield,
-      title: 'Secure Platform',
-      description: 'Bank-level security with multi-layer encryption and fraud protection',
-      color: 'from-orange-500 to-orange-600'
     },
     {
       icon: Users,
       title: 'Community Driven',
-      description: 'Connect with like-minded investors and successful entrepreneurs',
+      description: 'Connect and grow with a supportive community of successful entrepreneurs, investors and supportive users.',
+      color: 'from-orange-500 to-orange-600'
+    },
+    {
+      icon: Lightbulb,
+      title: 'Innovative Solutions',
+      description: 'Use our innovative technology tools to guarantee business success and profitable investments.',
       color: 'from-purple-500 to-purple-600'
     },
     {
-      icon: Zap,
-      title: 'Instant Funding',
-      description: 'Fast-track your projects with our streamlined funding process',
+      icon: Eye,
+      title: 'Wide Reach',
+      description: 'Enjoy visibility from our strong presence and partnerships.',
       color: 'from-orange-500 to-orange-600'
     }
   ];
 
   const stats = [
-    { value: '₦50M+', label: 'Total Funded', icon: DollarSign, color: 'text-purple-500' },
-    { value: '10K+', label: 'Active Users', icon: Users, color: 'text-orange-600' },
-    { value: '500+', label: 'Successful Projects', icon: Award, color: 'text-purple-500' },
-    { value: '98%', label: 'Success Rate', icon: TrendingUp, color: 'text-orange-600' }
+    { value: `₦${(counters.funded / 1000000).toFixed(0)}M+`, label: 'Total Funded', icon: DollarSign, color: 'text-purple-500' },
+    { value: `${(counters.users / 1000).toFixed(0)}K+`, label: 'Active Users', icon: Users, color: 'text-orange-600' },
+    { value: `${counters.projects}+`, label: 'Successful Projects', icon: Award, color: 'text-purple-500' },
+    { value: `${counters.rate}%`, label: 'Success Rate', icon: TrendingUp, color: 'text-orange-600' }
+  ];
+
+  const recognitionLogos = [
+    { name: 'WTO', logo: '/api/placeholder/120/60' },
+    { name: 'ICC', logo: '/api/placeholder/120/60' },
+    { name: 'ITC', logo: '/api/placeholder/120/60' },
+    { name: 'AWS Activate', logo: '/api/placeholder/120/60' }
   ];
 
   return (
@@ -111,15 +155,18 @@ export function LandingPage() {
               </div>
               
               <h1 className="text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
-                Fund Your Dreams,{' '}
+                Fund | Build | Sell | Scale Your Dreams,{' '}
                 <span className="bg-gradient-to-r from-purple-600 via-purple-600 to-orange-600 bg-clip-text text-transparent">
                   Invest in Tomorrow
                 </span>
               </h1>
               
               <p className="text-xl text-white mb-8 leading-relaxed max-w-3xl mx-auto">
-                Join the future of crowdfunding where innovative projects meet smart investors. 
-                Build, fund, and grow with our AI-powered platform that's already helped fund over ₦50M in projects.
+                Join the future of funding where innovative ideas meet innovative tools.
+              </p>
+              
+              <p className="text-lg text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto">
+                Build, Fund, Sell, Scale with our AI-Powered and Blockchain-Integrated platform that's already helped fund millions in projects.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -216,6 +263,39 @@ export function LandingPage() {
         </div>
       </section>
 
+      {/* Recognition Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-8">
+              Internationally Recognized by:
+            </h2>
+            
+            <div className="relative overflow-hidden">
+              <motion.div
+                className="flex items-center justify-center space-x-12"
+                animate={{ x: [0, -100, 0] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              >
+                {[...recognitionLogos, ...recognitionLogos].map((org, index) => (
+                  <div key={index} className="flex-shrink-0">
+                    <div className="w-32 h-16 bg-white rounded-lg shadow-md flex items-center justify-center border border-gray-200">
+                      <span className="text-gray-600 font-semibold text-sm">{org.name}</span>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* How It Works Section */}
       <section id="how-it-works" className="py-20 bg-gradient-to-br from-gray-50 to-purple-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -234,7 +314,7 @@ export function LandingPage() {
               Simple Process
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Three simple steps to start your crowdfunding journey and turn your dreams into reality
+              Three simple steps to start your funding journey and turn your dreams into reality
             </p>
           </motion.div>
 
@@ -243,14 +323,14 @@ export function LandingPage() {
               {
                 step: '01',
                 title: 'Create Your Project',
-                description: 'Share your innovative idea with detailed descriptions, goals, and milestones. Our AI helps optimize your campaign.',
+                description: 'Share your innovative idea with detailed descriptions, goals, and milestones. Our AI helps optimize your work.',
                 icon: <Zap className="w-12 h-12 text-white" />,
                 color: 'from-purple-500 to-purple-600'
               },
               {
                 step: '02', 
                 title: 'Get Discovered',
-                description: 'Our AI-powered platform matches your project with interested investors and promotes it to the right audience.',
+                description: 'Our AI-powered platform matches your project with interested investors and customers and promotes it to the right audience.',
                 icon: <Target className="w-12 h-12 text-white" />,
                 color: 'from-purple-500 to-purple-600'
               },
@@ -387,14 +467,14 @@ export function LandingPage() {
           >
             <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
               <Users className="w-4 h-4 text-white" />
-              <span className="text-sm font-medium text-white">Join 10,000+ Innovators</span>
+              <span className="text-sm font-medium text-white">Join thousands of entrepreneurs and investors</span>
             </div>
             
             <h2 className="text-5xl font-bold text-white mb-6">
-              Ready to Transform Your Ideas?
+              Divasity: Accelerating Startups for a Sustainable Future
             </h2>
             <p className="text-xl text-white/90 mb-8 leading-relaxed">
-              Join thousands of creators and investors building the future together. 
+              Join thousands of entrepreneurs and investors building the future together. 
               Your next big breakthrough is just one click away.
             </p>
             

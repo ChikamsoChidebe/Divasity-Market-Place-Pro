@@ -57,14 +57,24 @@ const ThemedWalletBalance: React.FC<ThemedWalletBalanceProps> = ({
   const fetchWalletData = async () => {
     try {
       setLoading(true);
-      const response = await apiService.get('/wallet/balance');
       
-      if (!response.error) {
-        setBalance(response.data?.balance || 0);
-        setTransactions(response.data?.recentTransactions || []);
+      // Get balance from user data or fetch user profile
+      if (user?.balance) {
+        setBalance(parseFloat(user.balance) || 0);
+      } else if (user?.id) {
+        const response = await apiService.getUserById(user.id);
+        if (!response.error && response.data?.balance) {
+          setBalance(parseFloat(response.data.balance) || 0);
+        }
       }
+      
+      // Mock recent transactions for now
+      setTransactions([]);
     } catch (error) {
       console.error('Error fetching wallet data:', error);
+      // Fallback to stored balance
+      const storedUser = JSON.parse(sessionStorage.getItem('divasity_user') || '{}');
+      setBalance(parseFloat(storedUser.balance) || 0);
     } finally {
       setLoading(false);
     }

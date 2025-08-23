@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, User, LogOut, Settings, Bell } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import Button from '../ui/Button';
-import divasityLogo from '../../assets/divasityIcon.png';
+import divasityLogo from '../../assets/divasityicons.png';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,6 +34,7 @@ const Header: React.FC = () => {
     { name: 'Contact', href: '/contact' },
     { name: 'About', href: '/about' },
     { name: 'Projects', href: '/projects' },
+    { name: 'DBS', href: '/dbs' },
   ];
 
   return (
@@ -50,7 +51,7 @@ const Header: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               src={divasityLogo}
               alt="Divasity Logo"
-              className="w-20 h-20 object-cover py-2"
+              className="w-24 h-24 object-cover py-2"
             />
             <span
               className={`text-2xl md:text-2xl font-display font-bold transition-colors ${

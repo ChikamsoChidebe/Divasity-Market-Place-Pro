@@ -12,6 +12,7 @@ import NewsPage from './pages/NewsPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import HelpPage from './pages/HelpPage';
+import DBSPage from './pages/DBSPage';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -82,6 +83,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/help" element={<HelpPage />} />
+          <Route path="/dbs" element={<DBSPage />} />
           
           {/* Auth Routes */}
           <Route path="/login" element={<LoginPage />} />
