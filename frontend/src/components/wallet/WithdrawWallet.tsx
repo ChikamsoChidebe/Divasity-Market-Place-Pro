@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, CreditCard, Wallet, AlertCircle } from 'lucide-react';
+import { Banknote, CreditCard, Wallet, AlertCircle } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { apiService } from '../../services/api';
 import toast from 'react-hot-toast';
@@ -94,7 +94,7 @@ const WithdrawWallet: React.FC<WithdrawWalletProps> = ({
             Withdrawal Amount (NGN)
           </label>
           <div className="relative">
-            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Banknote className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="number"
               value={amount}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import { motion } from 'framer-motion';
-import { DollarSign, CreditCard, Wallet } from 'lucide-react';
+import { Banknote, CreditCard, Wallet } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { WalletService } from '../../services/walletService';
 import { ToastService } from '../../services/toastService';
@@ -123,7 +123,7 @@ const FundWallet: React.FC<FundWalletProps> = ({ onSuccess, onClose }) => {
             Amount (NGN)
           </label>
           <div className="relative">
-            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Banknote className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="number"
               value={amount}

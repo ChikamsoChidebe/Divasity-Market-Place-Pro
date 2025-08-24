@@ -6,7 +6,7 @@ import {
   Upload, 
   Plus, 
   X, 
-  DollarSign, 
+  Banknote, 
   Calendar, 
   Target,
   Image as ImageIcon,
@@ -276,7 +276,7 @@ export default function CreateProjectPage() {
                   Expected Raise Amount (₦) *
                 </label>
                 <div className="relative">
-                  <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Banknote className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="number"
                     value={formData.expectedRaiseAmount}

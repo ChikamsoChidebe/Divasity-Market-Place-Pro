@@ -8,7 +8,7 @@ import {
   Target, 
   TrendingUp,
   Clock,
-  DollarSign,
+  Banknote,
   Wallet,
   Shield,
   CheckCircle,
@@ -199,7 +199,7 @@ export default function InvestorProjectDetails() {
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <DollarSign className="w-6 h-6 text-orange-600" />
+                    <Banknote className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Amount Raised</p>
@@ -275,7 +275,7 @@ export default function InvestorProjectDetails() {
                     Investment Amount (₦)
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Banknote className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                       type="number"
                       value={investmentAmount}
@@ -326,7 +326,7 @@ export default function InvestorProjectDetails() {
                   disabled={!investmentAmount || parseFloat(investmentAmount) <= 0 || parseFloat(investmentAmount) > userBalance}
                   className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
                 >
-                  <DollarSign className="w-5 h-5" />
+                  <Banknote className="w-5 h-5" />
                   <span>Invest Now</span>
                 </button>
 

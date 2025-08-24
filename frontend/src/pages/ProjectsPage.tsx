@@ -7,7 +7,7 @@ import {
   TrendingUp, 
   Clock, 
   Users, 
-  DollarSign,
+  Banknote,
   Heart,
   Eye,
   Star,
@@ -377,7 +377,7 @@ export default function ProjectsPage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <Banknote className="w-3 h-3 sm:w-4 sm:h-4" />
                       <span>Invest Now</span>
                     </motion.button>
                   </div>
