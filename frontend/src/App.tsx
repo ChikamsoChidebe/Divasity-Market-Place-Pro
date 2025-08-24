@@ -33,6 +33,7 @@ import CreatorWallet from './pages/creator/CreatorWallet';
 import InvestorPortfolio from './pages/investor/InvestorPortfolio';
 import InvestorInvestments from './pages/investor/InvestorInvestments';
 import InvestorProjectsView from './components/investor/InvestorProjectsView';
+import InvestorProjectDetails from './pages/investor/InvestorProjectDetails';
 import InvestorWallet from './pages/investor/InvestorWallet';
 import AdminWallet from './pages/admin/AdminWallet';
 import CreatorNotifications from './pages/creator/CreatorNotifications';
@@ -112,7 +113,7 @@ function App() {
             <Route path="/investor/*" element={<InvestorLayout />}>
               <Route path="dashboard" element={<InvestorDashboard />} />
               <Route path="projects" element={<InvestorProjectsView />} />
-              <Route path="projects/:id" element={<ProjectDetailsPage />} />
+              <Route path="projects/:id" element={<InvestorProjectDetails />} />
               <Route path="portfolio" element={<InvestorPortfolio />} />
 
               <Route path="wallet" element={<InvestorWallet />} />

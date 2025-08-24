@@ -306,7 +306,7 @@ export default function InvestorProjectsView() {
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                   <motion.button
-                    onClick={() => navigate(`/projects/${project.id}`)}
+                    onClick={() => navigate(`/investor/projects/${project.id}`)}
                     className="flex-1 btn-secondary text-xs sm:text-sm flex items-center justify-center space-x-2 py-2 sm:py-1 border-orange-300 text-orange-700 hover:bg-orange-50"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -316,7 +316,7 @@ export default function InvestorProjectsView() {
                   </motion.button>
                   
                   <motion.button
-                    onClick={() => handleInvest(project.id)}
+                    onClick={() => navigate(`/investor/projects/${project.id}`)}
                     className="flex-1 bg-orange-600 hover:bg-orange-700 text-white text-xs sm:text-sm flex items-center justify-center space-x-2 py-2 sm:py-1 rounded-lg font-medium transition-colors"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
