@@ -36,6 +36,7 @@ import InvestorProjectsView from './components/investor/InvestorProjectsView';
 import InvestorProjectDetails from './pages/investor/InvestorProjectDetails';
 import InvestorWallet from './pages/investor/InvestorWallet';
 import AdminWallet from './pages/admin/AdminWallet';
+import AdminNews from './pages/admin/AdminNews';
 import CreatorNotifications from './pages/creator/CreatorNotifications';
 import InvestorNotifications from './pages/investor/InvestorNotifications';
 
@@ -127,6 +128,7 @@ function App() {
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="users" element={<div className="p-8"><h1 className="text-2xl font-bold">User Management</h1><p className="text-gray-600 mt-2">User management interface coming soon...</p></div>} />
               <Route path="projects" element={<div className="p-8"><h1 className="text-2xl font-bold">Project Reviews</h1><p className="text-gray-600 mt-2">Project review interface coming soon...</p></div>} />
+              <Route path="news" element={<AdminNews />} />
 
               <Route path="wallet" element={<AdminWallet />} />
               <Route path="security" element={<div className="p-8"><h1 className="text-2xl font-bold">Security Center</h1><p className="text-gray-600 mt-2">Security management coming soon...</p></div>} />

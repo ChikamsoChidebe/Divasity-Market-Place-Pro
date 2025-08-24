@@ -19,7 +19,8 @@ import {
   Home,
   UserCheck,
   TrendingUp,
-  Flag
+  Flag,
+  Newspaper
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useAdminStore } from '../../store/adminStore';
@@ -42,6 +43,7 @@ export default function AdminLayout() {
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'User Management', href: '/admin/users', icon: Users },
     { name: 'Project Reviews', href: '/admin/projects', icon: TrendingUp },
+    { name: 'News Management', href: '/admin/news', icon: Newspaper },
     { name: 'System Analytics', href: '/admin/analytics', icon: BarChart3 },
     { name: 'Security Center', href: '/admin/security', icon: Shield },
     { name: 'Reports', href: '/admin/reports', icon: FileText },
@@ -90,7 +92,7 @@ export default function AdminLayout() {
                 <motion.button
                   key={item.name}
                   onClick={() => navigate(item.href)}
-                  className={`group flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium transition-all ?{
+                  className={`group flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium transition-all ${
                     isActive(item.href)
                       ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-lg'
                       : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
@@ -209,7 +211,7 @@ export default function AdminLayout() {
                       navigate(item.href);
                       setIsSidebarOpen(false);
                     }}
-                    className={`group flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium ?{
+                    className={`group flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium ${
                       isActive(item.href)
                         ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white'
                         : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
@@ -312,7 +314,7 @@ export default function AdminLayout() {
               <motion.button
                 key={item.name}
                 onClick={() => navigate(item.href)}
-                className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all ?{
+                className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all ${
                   isActive(item.href)
                     ? 'bg-purple-500 text-white'
                     : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
